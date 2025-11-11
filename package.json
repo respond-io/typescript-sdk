@@ -1,0 +1,95 @@
+{
+    "name": "@respond-io/typescript-sdk",
+    "version": "0.1.0",
+    "description": "Official TypeScript SDK for the respond.io Developer API v2",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "module": "dist/index.mjs",
+    "exports": {
+        ".": {
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "prebuild": "npm run clean",
+        "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+        "postbuild": "./.postbuild.sh",
+        "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+        "test": "jest --verbose",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage --verbose",
+        "test:ci": "jest --ci --coverage --maxWorkers=2",
+        "lint": "eslint src tests --ext .ts",
+        "lint:fix": "eslint src tests --ext .ts --fix",
+        "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+        "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+        "typecheck": "tsc --noEmit",
+        "validate": "npm run typecheck && npm run lint && npm run test:coverage",
+        "prepublishOnly": "npm run validate && npm run build && cd dist",
+        "prepack": "npm run build",
+        "clean": "rm -rf dist coverage",
+        "release:dev": "npm publish --tag next || (echo 'Release failed' && exit 1)",
+        "release": "npm publish --registry https://registry.npmjs.org/ --access public || (echo 'Release failed' && exit 1)"
+    },
+    "keywords": [
+        "respondio",
+        "respond.io",
+        "sdk",
+        "typescript",
+        "messaging",
+        "whatsapp",
+        "api",
+        "customer-engagement",
+        "omnichannel",
+        "crm",
+        "conversational-ai"
+    ],
+    "author": "respond.io",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/respond-io/typescript-sdk.git"
+    },
+    "bugs": {
+        "url": "https://github.com/respond-io/typescript-sdk/issues"
+    },
+    "homepage": "https://github.com/respond-io/typescript-sdk#readme",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "dependencies": {
+        "axios": "^1.6.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "@types/node": "^24.10.0",
+        "@typescript-eslint/eslint-plugin": "^8.46.2",
+        "@typescript-eslint/parser": "^8.46.2",
+        "eslint": "^9.39.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "jest": "^30.2.0",
+        "prettier": "^3.6.2",
+        "ts-jest": "^29.4.5",
+        "tsup": "^8.5.0",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.46.2"
+    },
+    "peerDependencies": {
+        "typescript": ">=5.0.0"
+    },
+    "peerDependenciesMeta": {
+        "typescript": {
+            "optional": true
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
