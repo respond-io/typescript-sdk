@@ -4,6 +4,8 @@ import {
   SendMessageRequest,
   SendMessageResponse,
   GetMessageResponse,
+  PaginationParams,
+  PaginationResponse,
 } from '../types/index';
 
 /**
@@ -34,5 +36,17 @@ export class MessagingClient {
     messageId: number
   ): Promise<GetMessageResponse> {
     return this.http.get(`/contact/${identifier}/message/${messageId}`);
+  }
+
+  /**
+   * List messages for a contact
+   * @param identifier - Contact identifier
+   * @param pagination - Pagination parameters
+   */
+  async list(
+    identifier: ContactIdentifier,
+    pagination?: PaginationParams
+  ): Promise<{ items: GetMessageResponse[]; pagination: PaginationResponse }> {
+    return this.http.get(`/contact/${identifier}/message/list`, pagination);
   }
 }
