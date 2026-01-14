@@ -47,6 +47,6 @@ export class MessagingClient {
     identifier: ContactIdentifier,
     pagination?: PaginationParams
   ): Promise<{ items: GetMessageResponse[]; pagination: PaginationResponse }> {
-    return this.http.post(`/contact/${identifier}/message/list`, undefined, pagination);
+    return this.http.get(`/contact/${identifier}/message/list`, pagination);
   }
 }
