@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/respond-io/typescript-sdk/compare/v0.3.0...v0.3.1) (2026-01-14)
+
+
+### Bug Fixes
+
+* updated api method ([af007da](https://github.com/respond-io/typescript-sdk/commit/af007da21de70e3baf8a382edcebeb8ce268f9bf))
+* updated api method ([417be32](https://github.com/respond-io/typescript-sdk/commit/417be325de30404bec0f533ff37a917ebdc0e632))
+
 ## [0.3.0](https://github.com/respond-io/typescript-sdk/compare/v0.2.0...v0.3.0) (2026-01-14)
 
 
