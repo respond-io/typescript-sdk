@@ -187,6 +187,17 @@ export interface SendMessageResponse {
 }
 
 /**
+ * Message sender
+ */
+export interface MessageSender {
+  source: 'user' | 'ai_agent' | 'workflow' | 'api' | 'echo' | 'broadcast';
+  userId?: number;
+  teamId?: number;
+  workflowId?: number;
+  broadcastHistoryId?: number;
+}
+
+/**
  * Get message response
  */
 export interface GetMessageResponse {
@@ -197,4 +208,5 @@ export interface GetMessageResponse {
   traffic: MessageTraffic;
   message: Message;
   status?: MessageStatusEntry[];
+  sender?: MessageSender;
 }

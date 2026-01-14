@@ -207,5 +207,345 @@ describe('MessagingClient', () => {
 
       expect(mockHttp.get).toHaveBeenCalledWith('/contact/phone:+1234567890/message/123');
     });
+
+    it('should get message with sender (user)', async () => {
+      const mockResponse: GetMessageResponse = {
+        messageId: 123456,
+        channelMessageId: 'msg-abc',
+        contactId: 123,
+        channelId: 999,
+        traffic: 'outgoing',
+        message: {
+          type: 'text',
+          text: 'Hello World',
+        },
+        sender: {
+          source: 'user',
+          userId: 456,
+        },
+      };
+
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.get('id:123', 123456);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.sender?.source).toBe('user');
+      expect(result.sender?.userId).toBe(456);
+    });
+
+    it('should get message with sender (ai_agent)', async () => {
+      const mockResponse: GetMessageResponse = {
+        messageId: 789,
+        channelMessageId: 'msg-xyz',
+        contactId: 123,
+        channelId: 999,
+        traffic: 'outgoing',
+        message: {
+          type: 'text',
+          text: 'AI response',
+        },
+        sender: {
+          source: 'ai_agent',
+        },
+      };
+
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.get('id:123', 789);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.sender?.source).toBe('ai_agent');
+    });
+
+    it('should get message with sender (workflow)', async () => {
+      const mockResponse: GetMessageResponse = {
+        messageId: 101,
+        channelMessageId: 'msg-workflow',
+        contactId: 123,
+        channelId: 999,
+        traffic: 'outgoing',
+        message: {
+          type: 'text',
+          text: 'Workflow message',
+        },
+        sender: {
+          source: 'workflow',
+          workflowId: 789,
+        },
+      };
+
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.get('id:123', 101);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.sender?.source).toBe('workflow');
+      expect(result.sender?.workflowId).toBe(789);
+    });
+
+    it('should get message with sender (api)', async () => {
+      const mockResponse: GetMessageResponse = {
+        messageId: 202,
+        channelMessageId: 'msg-api',
+        contactId: 123,
+        channelId: 999,
+        traffic: 'outgoing',
+        message: {
+          type: 'text',
+          text: 'API message',
+        },
+        sender: {
+          source: 'api',
+        },
+      };
+
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.get('id:123', 202);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.sender?.source).toBe('api');
+    });
+
+    it('should get message with sender (broadcast)', async () => {
+      const mockResponse: GetMessageResponse = {
+        messageId: 303,
+        channelMessageId: 'msg-broadcast',
+        contactId: 123,
+        channelId: 999,
+        traffic: 'outgoing',
+        message: {
+          type: 'text',
+          text: 'Broadcast message',
+        },
+        sender: {
+          source: 'broadcast',
+          broadcastHistoryId: 555,
+        },
+      };
+
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.get('id:123', 303);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.sender?.source).toBe('broadcast');
+      expect(result.sender?.broadcastHistoryId).toBe(555);
+    });
+
+    it('should get message with sender (echo)', async () => {
+      const mockResponse: GetMessageResponse = {
+        messageId: 404,
+        channelMessageId: 'msg-echo',
+        contactId: 123,
+        channelId: 999,
+        traffic: 'outgoing',
+        message: {
+          type: 'text',
+          text: 'Echo message',
+        },
+        sender: {
+          source: 'echo',
+        },
+      };
+
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.get('id:123', 404);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.sender?.source).toBe('echo');
+    });
+  });
+
+  describe('list', () => {
+    it('should list messages without pagination', async () => {
+      const mockResponse = {
+        items: [
+          {
+            messageId: 123456,
+            channelMessageId: 'msg-abc',
+            contactId: 123,
+            channelId: 999,
+            traffic: 'outgoing' as const,
+            message: {
+              type: 'text' as const,
+              text: 'Hello World',
+            },
+            status: [
+              {
+                value: 'sent' as const,
+                timestamp: 1234567890,
+              },
+            ],
+            sender: {
+              source: 'user' as const,
+              userId: 456,
+            },
+          },
+          {
+            messageId: 123457,
+            channelMessageId: 'msg-def',
+            contactId: 123,
+            channelId: 999,
+            traffic: 'incoming' as const,
+            message: {
+              type: 'text' as const,
+              text: 'Hi there',
+            },
+          },
+        ],
+        pagination: {
+          next: 'https://api.respond.io/v2/contact/id:123/message/list?limit=10&cursorId=20',
+          previous: '',
+        },
+      };
+
+      mockHttp.post.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.list('id:123');
+
+      expect(result).toEqual(mockResponse);
+      expect(result.items[0].sender?.source).toBe('user');
+      expect(result.items[0].sender?.userId).toBe(456);
+      expect(result.items[1].sender).toBeUndefined();
+      expect(mockHttp.post).toHaveBeenCalledWith(
+        '/contact/id:123/message/list',
+        undefined,
+        undefined
+      );
+    });
+
+    it('should list messages with pagination', async () => {
+      const pagination = { limit: 50, cursorId: 100 };
+      const mockResponse = {
+        items: [
+          {
+            messageId: 123456,
+            channelMessageId: 'msg-abc',
+            contactId: 123,
+            channelId: 999,
+            traffic: 'outgoing' as const,
+            message: {
+              type: 'text' as const,
+              text: 'Hello World',
+            },
+          },
+        ],
+        pagination: {
+          next: 'https://api.respond.io/v2/contact/id:123/message/list?limit=50&cursorId=150',
+          previous:
+            'https://api.respond.io/v2/contact/id:123/message/list?limit=50&cursorId=50',
+        },
+      };
+
+      mockHttp.post.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.list('id:123', pagination);
+
+      expect(result).toEqual(mockResponse);
+      expect(mockHttp.post).toHaveBeenCalledWith(
+        '/contact/id:123/message/list',
+        undefined,
+        pagination
+      );
+    });
+
+    it('should list messages with email identifier', async () => {
+      const mockResponse = {
+        items: [
+          {
+            messageId: 789,
+            channelMessageId: 'msg-xyz',
+            contactId: 456,
+            channelId: 888,
+            traffic: 'outgoing' as const,
+            message: {
+              type: 'text' as const,
+              text: 'Test message',
+            },
+          },
+        ],
+        pagination: {
+          next: '',
+          previous: '',
+        },
+      };
+
+      mockHttp.post.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.list('email:user@example.com');
+
+      expect(result).toEqual(mockResponse);
+      expect(mockHttp.post).toHaveBeenCalledWith(
+        '/contact/email:user@example.com/message/list',
+        undefined,
+        undefined
+      );
+    });
+
+    it('should list messages with phone identifier', async () => {
+      const pagination = { limit: 20 };
+      const mockResponse = {
+        items: [],
+        pagination: {
+          next: '',
+          previous: '',
+        },
+      };
+
+      mockHttp.post.mockResolvedValueOnce(mockResponse);
+
+      await client.list('phone:+1234567890', pagination);
+
+      expect(mockHttp.post).toHaveBeenCalledWith(
+        '/contact/phone:+1234567890/message/list',
+        undefined,
+        pagination
+      );
+    });
+
+    it('should list messages with cursorId only', async () => {
+      const pagination = { cursorId: 200 };
+      const mockResponse = {
+        items: [
+          {
+            messageId: 123458,
+            channelMessageId: 'msg-ghi',
+            contactId: 123,
+            channelId: 999,
+            traffic: 'incoming' as const,
+            message: {
+              type: 'attachment' as const,
+              attachment: {
+                type: 'image' as const,
+                url: 'https://example.com/image.jpg',
+              },
+            },
+            sender: {
+              source: 'workflow' as const,
+              workflowId: 789,
+            },
+          },
+        ],
+        pagination: {
+          next: '',
+          previous: '',
+        },
+      };
+
+      mockHttp.post.mockResolvedValueOnce(mockResponse);
+
+      const result = await client.list('id:123', pagination);
+
+      expect(result.items[0].sender?.source).toBe('workflow');
+      expect(result.items[0].sender?.workflowId).toBe(789);
+      expect(mockHttp.post).toHaveBeenCalledWith(
+        '/contact/id:123/message/list',
+        undefined,
+        pagination
+      );
+    });
   });
 });

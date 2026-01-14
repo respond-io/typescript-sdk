@@ -1,6 +1,6 @@
 {
     "name": "@respond-io/typescript-sdk",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "description": "Official TypeScript SDK for the respond.io Developer API v2",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
