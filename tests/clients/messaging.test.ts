@@ -402,7 +402,7 @@ describe('MessagingClient', () => {
         },
       };
 
-      mockHttp.post.mockResolvedValueOnce(mockResponse);
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
 
       const result = await client.list('id:123');
 
@@ -410,9 +410,8 @@ describe('MessagingClient', () => {
       expect(result.items[0].sender?.source).toBe('user');
       expect(result.items[0].sender?.userId).toBe(456);
       expect(result.items[1].sender).toBeUndefined();
-      expect(mockHttp.post).toHaveBeenCalledWith(
+      expect(mockHttp.get).toHaveBeenCalledWith(
         '/contact/id:123/message/list',
-        undefined,
         undefined
       );
     });
@@ -440,14 +439,13 @@ describe('MessagingClient', () => {
         },
       };
 
-      mockHttp.post.mockResolvedValueOnce(mockResponse);
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
 
       const result = await client.list('id:123', pagination);
 
       expect(result).toEqual(mockResponse);
-      expect(mockHttp.post).toHaveBeenCalledWith(
+      expect(mockHttp.get).toHaveBeenCalledWith(
         '/contact/id:123/message/list',
-        undefined,
         pagination
       );
     });
@@ -473,14 +471,13 @@ describe('MessagingClient', () => {
         },
       };
 
-      mockHttp.post.mockResolvedValueOnce(mockResponse);
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
 
       const result = await client.list('email:user@example.com');
 
       expect(result).toEqual(mockResponse);
-      expect(mockHttp.post).toHaveBeenCalledWith(
+      expect(mockHttp.get).toHaveBeenCalledWith(
         '/contact/email:user@example.com/message/list',
-        undefined,
         undefined
       );
     });
@@ -495,13 +492,12 @@ describe('MessagingClient', () => {
         },
       };
 
-      mockHttp.post.mockResolvedValueOnce(mockResponse);
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
 
       await client.list('phone:+1234567890', pagination);
 
-      expect(mockHttp.post).toHaveBeenCalledWith(
+      expect(mockHttp.get).toHaveBeenCalledWith(
         '/contact/phone:+1234567890/message/list',
-        undefined,
         pagination
       );
     });
@@ -535,15 +531,14 @@ describe('MessagingClient', () => {
         },
       };
 
-      mockHttp.post.mockResolvedValueOnce(mockResponse);
+      mockHttp.get.mockResolvedValueOnce(mockResponse);
 
       const result = await client.list('id:123', pagination);
 
       expect(result.items[0].sender?.source).toBe('workflow');
       expect(result.items[0].sender?.workflowId).toBe(789);
-      expect(mockHttp.post).toHaveBeenCalledWith(
+      expect(mockHttp.get).toHaveBeenCalledWith(
         '/contact/id:123/message/list',
-        undefined,
         pagination
       );
     });
