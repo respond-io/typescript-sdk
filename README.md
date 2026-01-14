@@ -149,9 +149,7 @@ await client.contacts.create('email:user@example.com', {
 ```typescript
 await client.contacts.update('id:123', {
   firstName: 'Jane',
-  custom_fields: [
-    { name: 'Role', value: 'Senior Developer' },
-  ],
+  custom_fields: [{ name: 'Role', value: 'Senior Developer' }],
 });
 ```
 
@@ -166,23 +164,26 @@ const result = await client.contacts.list({
 });
 
 // List with filters
-const result = await client.contacts.list({
-  search: '',
-  timezone: 'UTC',
-  filter: {
-    $and: [
-      {
-        category: 'contactField',
-        field: 'assigneeUserId',
-        operator: 'isEqualTo',
-        value: '123',
-      },
-    ],
+const result = await client.contacts.list(
+  {
+    search: '',
+    timezone: 'UTC',
+    filter: {
+      $and: [
+        {
+          category: 'contactField',
+          field: 'assigneeUserId',
+          operator: 'isEqualTo',
+          value: '123',
+        },
+      ],
+    },
   },
-}, {
-  limit: 50,
-  cursorId: 0,
-});
+  {
+    limit: 50,
+    cursorId: 0,
+  }
+);
 ```
 
 #### Manage Tags
@@ -257,6 +258,27 @@ await client.messaging.send('id:123', {
 ```typescript
 const message = await client.messaging.get('id:123', 987654);
 console.log(message.status); // Message delivery status
+```
+
+#### List Messages
+
+```typescript
+// List all messages for a contact
+const result = await client.messaging.list('id:123');
+console.log(result.items); // Array of messages
+console.log(result.pagination); // Pagination info
+
+// List messages with pagination
+const result = await client.messaging.list('id:123', {
+  limit: 50,
+  cursorId: 100,
+});
+
+// List messages for different contact identifiers
+const result = await client.messaging.list('email:user@example.com');
+const result = await client.messaging.list('phone:+1234567890', {
+  limit: 20,
+});
 ```
 
 ### Comments
@@ -392,7 +414,7 @@ try {
     console.error('Status:', error.statusCode);
     console.error('Code:', error.code);
     console.error('Message:', error.message);
-    
+
     // Check error type
     if (error.isRateLimitError()) {
       console.error('Rate limit reached!');
