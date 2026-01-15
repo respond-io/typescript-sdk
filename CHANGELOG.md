@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/respond-io/typescript-sdk/compare/v1.1.0...v1.2.0) (2026-01-15)
+
+
+### Features
+
+* trigger github actions ([3ef7cf4](https://github.com/respond-io/typescript-sdk/commit/3ef7cf49afb5ae2e333d166703098d88573224eb))
+* trigger github actions ([c945872](https://github.com/respond-io/typescript-sdk/commit/c94587250dc68c98b826918ced0ea1f56e820ef6))
+
 ## [1.1.0](https://github.com/respond-io/typescript-sdk/compare/v1.0.0...v1.1.0) (2026-01-14)
 
 
