@@ -35,7 +35,7 @@
         "prepack": "npm run build",
         "clean": "rm -rf dist coverage",
         "release:dev": "npm publish --tag next || (echo 'Release failed' && exit 1)",
-        "release": "npm publish --registry https://registry.npmjs.org/ --access public || (echo 'Release failed' && exit 1)"
+        "release": "npm publish --registry https://registry.npmjs.org/ --access public --provenance || (echo 'Release failed' && exit 1)"
     },
     "keywords": [
         "respondio",
