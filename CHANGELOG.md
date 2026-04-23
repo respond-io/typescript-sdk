@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/respond-io/typescript-sdk/compare/v1.3.0...v1.4.0) (2026-04-23)
+
+
+### Features
+
+* migrate npm publish to OIDC trusted publishing ([01abdcf](https://github.com/respond-io/typescript-sdk/commit/01abdcf0217127fdb7687beb9d7baed1ba8259a5))
+* migrate npm publish to OIDC trusted publishing ([fd769c8](https://github.com/respond-io/typescript-sdk/commit/fd769c89a225b743b36e2a35bf2b77367d00be1a))
+
 ## [1.3.0](https://github.com/respond-io/typescript-sdk/compare/v1.2.0...v1.3.0) (2026-04-23)
 
 
