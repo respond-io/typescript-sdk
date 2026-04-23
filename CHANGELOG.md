@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/respond-io/typescript-sdk/compare/v1.2.0...v1.3.0) (2026-04-23)
+
+
+### Features
+
+* migrate npm publish to OIDC authentication ([11a336f](https://github.com/respond-io/typescript-sdk/commit/11a336fb116c0d1c0b1a9c7d9743b70fbb57d762))
+* migrate npm publish to OIDC authentication ([917e708](https://github.com/respond-io/typescript-sdk/commit/917e70897ab98517aaf05cae5f2831b5c1b721a2))
+
 ## [1.2.0](https://github.com/respond-io/typescript-sdk/compare/v1.1.0...v1.2.0) (2026-01-15)
 
 
